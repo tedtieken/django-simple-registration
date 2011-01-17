@@ -9,10 +9,14 @@
     Hi {{user.get_profile.primary_adult.first_name}}.  You are already logged in as {{user.email}}.  <br /><br />You can <a href="{% url auth_logout %}">logout here</a>
 {% else %}
 <form method="post" action=".">{% csrf_token %}
-  {{ form.as_p }}
-
+ <p><label for="id_username">Login Email:</label> <input id="id_username" type="text" name="username" maxlength="30" /></p>
+ <p><label for="id_password">Password:</label> <input type="password" name="password" id="id_password" /></p>
+ {% if next %}
+  <input type="hidden" name="next" value="{{next}}">
+ {% else %}
+  <input type="hidden" name="next" value="{% url my_account %}">            
+ {% endif %}
   <input type="submit" value="{% trans 'Log in' %}" />
-  <input type="hidden" name="next" value="/account/" />
 </form>
 
 <p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
