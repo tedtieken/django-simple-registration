@@ -45,11 +45,11 @@ def send_welcome_email(request, user, **kwargs):
         site = RequestSite(request)        
         
     ctx_dict = {'site': site }
-    subject = render_to_string('registration/welcome_email_subject.txt', ctx_dict)
+    subject = render_to_string('simple_registration/welcome_email_subject.txt', ctx_dict)
     
     # Email subject *must not* contain newlines
     subject = ''.join(subject.splitlines())
-    message = render_to_string('registration/welcome_email.txt', ctx_dict)
+    message = render_to_string('simple_registration/welcome_email.txt', ctx_dict)
     
     user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
 
@@ -75,7 +75,7 @@ def register(request):
     else:
         form = RegistrationForm()
         
-    return render_to_response('registration/registration_form.html', locals(), context_instance=RequestContext(request))
+    return render_to_response('simple_registration/registration_form.html', locals(), context_instance=RequestContext(request))
 
 
 def create_registration_profile(user):

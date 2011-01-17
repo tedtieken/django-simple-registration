@@ -1,7 +1,7 @@
-Ted Tieken of Slingshot-Project.com and Sittingaround.com
+Primarily written by Ted Tieken of Sittingaround.com 
 
 
-Based in part on django-registration module, those parts used under 
+Based in part based on django-registration module, those parts used under 
 the following license:
 
 Copyright (c) 2007-2010, James Bennett
