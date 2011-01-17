@@ -1,0 +1,10 @@
+How to install.
+
+1.  Copy simple_registration to project.  My-Project/simple_registration.
+
+2.  Copy templates to your site templates directory.  NB auth templates WILL NOT LOAD from where they are simple_registration/templates/registration/ even if you have the app template loader installed.
+
+3.  Add (r'^accounts/', include('simple_registration.urls')), to base urls file.  NB do not add a namespace to this include, auth url reverse features break if you attempt to namespace them.
+
+
+  

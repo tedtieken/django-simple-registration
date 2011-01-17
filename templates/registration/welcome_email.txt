@@ -1,0 +1,4 @@
+{% load i18n %}
+{% trans "Welcome to " %} {{ site.name }}:
+
+Thanks for signing up!

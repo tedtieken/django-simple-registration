@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{block.super}} - Login{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    Hi {{user.get_profile.primary_adult.first_name}}.  You are already logged in as {{user.email}}.  <br /><br />You can <a href="{% url auth_logout %}">logout here</a>
+{% else %}
+<form method="post" action=".">{% csrf_token %}
+  {{ form.as_p }}
+
+  <input type="submit" value="{% trans 'Log in' %}" />
+  <input type="hidden" name="next" value="/account/" />
+</form>
+
+<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
+<p>{% trans "Not member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
+
+{% endif %}
+
+
+
+{% endblock %}

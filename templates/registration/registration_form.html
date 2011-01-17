@@ -1,0 +1,210 @@
+{% extends "form_base.html" %}
+
+{% block title %}{{block.super}} - Register{% endblock title %}
+
+{% block js.custom %}
+{{block.super}}
+
+<script type="text/javascript">
+
+	$(document).ready(function (){
+
+        {% with form as form %}
+        {% for item in form %}
+        {% if item.help_text %}
+        $("#td_for_{{item.name}}").append("<img src=\"{{MEDIA_URL}}/images/information.png\" class=\"help_icon\" id=\"help_icon_{{item.name}}\"  />");
+        $("#help_icon_{{item.name}}").mouseover(function() {
+            $("#help_text_{{item.name}}").show();
+        }).mouseout(function() {
+            $("#help_text_{{item.name}}").delay(200).hide(1);
+        });
+        {% endif %}
+        {% endfor %}
+        {% endwith %}
+
+        $("div.help_text").css({
+            'z-index': 2,
+            'position': 'absolute',
+            'width': '360px',
+            'background-color': 'white',
+            'border': '1px solid black',
+            'padding': '5px'
+        }).hide();
+        
+        $("div.form_info").append("<span class=\"toggle_hiw\">more on how it works</span>");
+        //$("div.how_it_works").append("<span class=\"toggle_hiw\">more on how it works</span>");
+        
+        $("span.toggle_hiw").css({
+            'text-decoration': 'underline',
+            'cursor': 'pointer',
+            'color': '#008000',
+        });
+        
+        $("div.how_it_works").toggle().css({
+            'border': '1px solid black',
+            'padding': '10px',
+            'margin-bottom': '10px'
+        }).hide();  
+        
+        $(".toggle_hiw").click(function() {
+            $("div.how_it_works").toggle();
+        });
+        $(".toggle_hiw").toggle(
+            function() {
+                $(".toggle_hiw").html("<span class=\"toggle_hiw\">less on how it works</span>");                      
+            },
+            function() {
+                $(".toggle_hiw").html("<span class=\"toggle_hiw\">more on how it works</span>");  
+            }
+        );   
+    });
+</script>
+
+{% endblock js.custom %}
+
+
+{% block content %}
+
+<h2>Signup</h2>
+
+<div class="form_info">
+    Use this form to create an account.      
+</div>
+<div class="how_it_works">
+<h3>How it works</h3>    
+<ol>
+    <li>Signup for SittingAround</li>
+    <li>Request to join an existing coop or create a new coop.</li>
+    <li>Create a profile.</li>
+    <li>Update billing information (free for first 60 days).</li>
+
+</ol>
+</div>
+<form method="post" action="{% url registration_register %}">{% csrf_token %}
+    <table cellspacing="0"> 
+        <tr>
+            <td colspan="0"><h3>Who are you?</h3></td>
+        </tr>
+        {% with form.first_name as field %}
+        <tr {% if field.errors %}class = "error" {% endif %}>
+            <td>{{ field.label_tag }}</td>
+            <td class="pad" id="td_for_{{field.name}}">
+                {{ field }}
+                {% comment %}Image will go here, set with javascript to not confuse the users {% endcomment %}
+            </td>
+            <td><div class="help_text" id="help_text_{{field.name}}">{{field.help_text}}</div>
+                {% if field.errors %}
+                    <div class="error_wrapper">{{ field.errors }}</div> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endwith %}
+        {% with form.last_name as field %}
+        <tr {% if field.errors %}class = "error" {% endif %}>
+            <td>{{ field.label_tag }}</td>
+            <td class="pad" id="td_for_{{field.name}}">
+                {{ field }}
+                {% comment %}Image will go here, set with javascript to not confuse the users {% endcomment %}
+            </td>
+            <td><div class="help_text" id="help_text_{{field.name}}">{{field.help_text}}</div>
+                {% if field.errors %}
+                    <div class="error_wrapper">{{ field.errors }}</div> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endwith %}
+        <tr>
+            <td colspan="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="0"><h3>Login Details</h3></td>
+        </tr>
+        {% with form.email as field %}
+        <tr {% if field.errors %}class = "error" {% endif %}>
+            <td><label for="id_for_{{field.name}}">Email address (used for login)</label></td>
+            <td class="pad" id="td_for_{{field.name}}">
+                {{ field }}
+                {% comment %}Image will go here, set with javascript to not confuse the users {% endcomment %}
+            </td>
+            <td><div class="information">You will use this email to login to your account.</div><div class="help_text" id="help_text_{{field.name}}">{{field.help_text}}</div>
+                {% if field.errors %}
+                    <div class="error_wrapper">{{ field.errors }}</div> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endwith %}
+        {% with form.email_again as field %}
+        <tr {% if field.errors %}class = "error" {% endif %}>
+            <td><label for="id_for_{{field.name}}">Email address (again)</label></td>
+            <td class="pad" id="td_for_{{field.name}}">
+                {{ field }}
+                {% comment %}Image will go here, set with javascript to not confuse the users {% endcomment %}
+            </td>
+            <td><div class="help_text" id="help_text_{{field.name}}">{{field.help_text}}</div>
+                {% if field.errors %}
+                    <div class="error_wrapper">{{ field.errors }}</div> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endwith %}
+        {% with form.password1 as field %}
+        <tr {% if field.errors %}class = "error" {% endif %}>
+            <td>{{ field.label_tag }}</td>
+            <td class="pad" id="td_for_{{field.name}}">
+                {{ field }}
+                {% comment %}Image will go here, set with javascript to not confuse the users {% endcomment %}
+            </td>
+            <td class="pad"><div class="help_text" id="help_text_{{field.name}}">{{field.help_text}}</div>
+                {% if field.errors %}
+                    <div class="error_wrapper">{{ field.errors }}</div> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endwith %}
+        {% with form.password2 as field %}
+        <tr {% if field.errors %}class = "error" {% endif %}>
+            <td>{{ field.label_tag }}</td>
+            <td class="pad" id="td_for_{{field.name}}">
+                {{ field }}
+                {% comment %}Image will go here, set with javascript to not confuse the users {% endcomment %}
+            </td>
+            <td><div class="help_text" id="help_text_{{field.name}}">{{field.help_text}}</div>
+                {% if field.errors %}
+                    <div class="error_wrapper">{{ field.errors }}</div> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endwith %}
+        <tr>
+            <td colspan="0">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="0"><h3>Terms of Use</h3></td>
+        </tr>
+        {% with form.tos as field %}
+        <tr {% if field.errors %}class = "error" {% endif %}>
+            <td>{{ field.label_tag }}</td>
+            <td class="pad" id="td_for_{{field.name}}">
+                {{ field }}
+                {% comment %}Image will go here, set with javascript to not confuse the users {% endcomment %}
+            </td>
+            <td><div class="help_text" id="help_text_{{field.name}}">{{field.help_text}}</div>
+                {% if field.errors %}
+                    <div class="error_wrapper">{{ field.errors }}</div> 
+                {% endif %}
+            </td>
+        </tr>
+        {% endwith %}        
+    <tr>
+        <td></td>
+        <td>
+        <input type="submit" value="Submit" />
+        </td>
+        <td></td>
+    </tr>
+    </table>
+
+</form>
+
+
+{% endblock %}
