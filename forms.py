@@ -44,6 +44,16 @@ class SARRegistrationForm(forms.Form):
         return self.cleaned_data['email']
                                 
     
+    def clean_email_again(self):
+         if 'email' in self.cleaned_data and 'email_again' in self.cleaned_data:
+            if self.cleaned_data['email'] != self.cleaned_data['email_again']:
+                raise forms.ValidationError(_("The two email fields didn't match"))       
+    
+    def clean_password2(self):
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
+            if self.data['password1'] != self.data['password2']:
+                raise forms.ValidationError(_("The two password fields didn't match."))         
+
     def clean(self):
         """
         Verifiy that the values entered into the two password fields
@@ -53,25 +63,13 @@ class SARRegistrationForm(forms.Form):
         
         """
         success = False
-        while True:
+        while success == False:
             self.cleaned_data['username'] = str(md5(str(self.data['email']) + str(random.random())).hexdigest())[0:30]
             try:
                 user = User.objects.get(username__iexact=self.cleaned_data['username'])
             except User.DoesNotExist:
                 success = True
-                break
         
-        if not success:
-            raise forms.ValidationError(_("A user with that username already exists."))        
-                
-        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
-            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
-                raise forms.ValidationError(_("The two password fields didn't match."))
-
-        if 'email' in self.cleaned_data and 'email_again' in self.cleaned_data:
-            if self.cleaned_data['email'] != self.cleaned_data['email_again']:
-                raise forms.ValidationError(_("The two email fields didn't match"))
-
         return self.cleaned_data                                
 
 class RegistrationForm(forms.Form):
